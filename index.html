@@ -1,48 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LifeCookie Server</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LifeCookie MC - Servidor Oficial 🍪</title>
+  <meta name="description" content="Servidor Minecraft con varias modalidades: PvP, survival tranquilo y más. IP: lifecokkiemc.mooo.com"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="https://img.icons8.com/emoji/96/000000/cookie.png"/>
 </head>
-<body>
+<body class="bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white min-h-screen font-sans">
 
-<header>
-  <div class="logo">🟣 LifeCookie MC</div>
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 bg-gray-800 border border-gray-700 p-6 rounded-xl shadow-2xl z-50 transform transition-all duration-500 translate-y-32 opacity-0">
+    <p class="text-lg mb-4">
+      ¡Bienvenido a LifeCookie MC! 🍪 Usamos cookies para mejorar tu experiencia y recordar preferencias. Al continuar, aceptas nuestra política de cookies.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button id="accept-cookies" class="bg-green-600 hover:bg-green-500 px-8 py-3 rounded-xl font-bold">
+        Aceptar cookies
+      </button>
+      <button id="close-cookies" class="bg-gray-600 hover:bg-gray-500 px-8 py-3 rounded-xl">
+        Cerrar
+      </button>
+    </div>
+  </div>
 
-  <nav>
-    <button onclick="showSection('home')">Home</button>
-    <button onclick="showSection('news')">News</button>
-    <button onclick="showSection('support')">Soporte</button>
-  </nav>
+  <!-- Hero -->
+  <header class="py-20 px-6 text-center">
+    <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-400 drop-shadow-lg">
+      LifeCookie Server 🍪🔥
+    </h1>
+    <p class="text-2xl md:text-4xl mt-6 font-semibold">
+      ¡Bienvenido! Varias modalidades desde PvP hasta no PvP, si te gusta algo más tranquilo
+    </p>
+    
+    <div class="mt-10 inline-block bg-green-600 hover:bg-green-500 px-12 py-6 rounded-2xl text-3xl font-bold shadow-2xl transition transform hover:scale-105">
+      IP: <span class="text-white">lifecokkiemc.mooo.com</span>
+    </div>
+    
+    <button onclick="navigator.clipboard.writeText('lifecokkiemc.mooo.com'); alert('IP copiada!')" 
+            class="mt-6 bg-blue-700 hover:bg-blue-600 px-8 py-4 rounded-xl text-xl">
+      Copiar IP
+    </button>
+  </header>
 
-  <button class="login-btn">Login</button>
-</header>
-
-<main>
-
-  <section id="home" class="section active">
-    <h1>🔥 Bienvenido</h1>
-    <p>Servidor oficial de Minecraft</p>
-
-    <div class="ip">
-      IP: TU-IP-AQUI
+  <!-- Status -->
+  <section class="max-w-4xl mx-auto px-6 py-12 text-center">
+    <div id="status" class="text-3xl font-bold">
+      Cargando estado del servidor...
     </div>
   </section>
 
-  <section id="news" class="section">
-    <h1>📰 Noticias</h1>
-    <p>Aquí aparecerán las noticias.</p>
+  <!-- Noticias y Soporte -->
+  <section class="max-w-4xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8">
+    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700">
+      <h2 class="text-3xl font-bold text-yellow-300 mb-4">📰 Noticias</h2>
+      <p class="text-lg">¡Servidor recién abierto! Próximos eventos: Build battle el sábado y drop party el domingo.</p>
+      <p class="mt-4 text-gray-400">Más actualizaciones pronto...</p>
+    </div>
+    
+    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700">
+      <h2 class="text-3xl font-bold text-blue-300 mb-4">❓ Soporte</h2>
+      <p class="text-lg">¿Problemas o sugerencias?</p>
+      <a href="https://discord.gg/TU_INVITE_AQUI" target="_blank" 
+         class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-500 px-8 py-4 rounded-xl text-xl">
+         Únete al Discord
+      </a>
+    </div>
   </section>
 
-  <section id="support" class="section">
-    <h1>❓ Soporte</h1>
-    <p>Ayuda y contacto del servidor.</p>
-  </section>
+  <!-- Footer -->
+  <footer class="py-8 text-center text-gray-500 border-t border-gray-700">
+    <p>© 2026 LifeCookie MC - ¡Diviértete! 🍪</p>
+  </footer>
 
-</main>
+  <!-- Script para status -->
+  <script>
+    fetch('https://api.mcsrvstat.us/3/lifecokkiemc.mooo.com')
+      .then(r => r.json())
+      .then(data => {
+        const el = document.getElementById('status');
+        if (data.online) {
+          el.innerHTML = `🟢 Online - ${data.players.online || 0}/${data.players.max || '?'} jugadores`;
+          el.classList.add('text-green-400');
+        } else {
+          el.innerHTML = '🔴 Offline - Intenta más tarde 😢';
+          el.classList.add('text-red-400');
+        }
+      })
+      .catch(() => {
+        document.getElementById('status').innerHTML = 'No se pudo cargar el estado';
+      });
+  </script>
 
-<script src="script.js"></script>
+  <!-- Script para cookies banner -->
+  <script>
+    const banner = document.getElementById('cookie-banner');
+    const acceptBtn = document.getElementById('accept-cookies');
+    const closeBtn = document.getElementById('close-cookies');
+
+    function showBanner() {
+      setTimeout(() => {
+        banner.classList.remove('translate-y-32', 'opacity-0');
+        banner.classList.add('translate-y-0', 'opacity-100');
+      }, 1000); // Aparece después de 1 segundo
+    }
+
+    if (!localStorage.getItem('cookiesAccepted')) {
+      showBanner();
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      banner.classList.add('opacity-0', 'translate-y-32');
+      setTimeout(() => banner.remove(), 500);
+    });
+
+    closeBtn.addEventListener('click', () => {
+      banner.classList.add('opacity-0', 'translate-y-32');
+      setTimeout(() => banner.remove(), 500);
+    });
+  </script>
+
 </body>
 </html>
